@@ -25,12 +25,19 @@ rows = table_body.find_all('tr')
 
 # for the rows in the table
 for row in rows:
+    rank_th = row.find_all('th')
+    
+    # City rank
+    rank = rank_th[0].text.strip()
+
     cols = row.find_all('td')
 
     # Get rid of special characters
     cols = [ele.text.strip().replace(r'[^.a-zA-Z0-9]',"") for ele in cols]
 
     new_cols = []
+
+    new_cols.append(rank)
 
     # String cleanup
     for i in cols:
@@ -40,6 +47,8 @@ for row in rows:
         new_cols.append(i)
 
     if len(new_cols) == 11:
+
+        #print(new_cols)
         # strip sq mi/km2
         new_cols[6] = new_cols[6].replace("sq mi", "").strip()
         new_cols[8] = new_cols[8].replace("sq mi", "").strip()
@@ -55,7 +64,7 @@ for row in rows:
     data.append([ele for ele in new_cols if ele]) # Get rid of empty values
 
 df = pd.DataFrame(data)
-df.columns = ['2019 Rank','City','State','2019 estimate','2010 census','Change','2016 land area sq mi','2016 land area km2','2016 pop density sq mi','2016 pop desity km2','longitude','latitude']
+df.columns = ['City Rank','City','State','2020 census','2010 census','Change','2020 land area sq mi','2016 land area km2','2020 pop density sq mi','2016 pop desity km2','longitude','latitude']
 
 del df['Change'] # we don't need this
 
