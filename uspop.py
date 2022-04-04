@@ -68,5 +68,22 @@ df.columns = ['City Rank','City','State','2020 census','2010 census','Change','2
 
 del df['Change'] # we don't need this
 
+# plot the data
+import matplotlib.pyplot as plt
+
+plt.style.use('ggplot')
+plt.style.use('seaborn-darkgrid')
+
 df.to_csv("us_populations.csv",index=False)
 print("done")
+
+# read us_populations.csv into df1
+df1 = pd.read_csv("us_populations.csv")
+
+# plot the data by top 10 cities by population
+df1.sort_values(by=['2020 census'],ascending=False,inplace=True)
+df1.head(10).plot(kind='bar',x='City',y='2020 census')
+plt.title("Top 10 cities by population")
+plt.xlabel("City")
+plt.ylabel("Population")
+plt.show()
